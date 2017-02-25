@@ -538,17 +538,11 @@ eth0 ethernet 01' > /opt/loep_v1.0/conf/interface.conf
 	fi
 
 	sleep 1
+	echo '[+]'
 
 	# running services
-	for each_service in $(ls /opt/loep_v1.0/*.sh); do
-	    $each_service > /dev/null 2>1 &
-	done
-	if [ "$?" = "0" ]; then
-	    echo '[+] All services running correctly.'
-	else
-	    echo '[+] Implementation off services has a problem.'
-	fi
-	
+	chmod +x service.sh
+	./service.sh start	
 	sleep 1
 	
 	echo '[+]'
