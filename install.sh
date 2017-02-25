@@ -81,10 +81,10 @@ function install_f {
 	# Insert web server directory
 	for (( ;; )) ; do
 		echo '[+] Enter web server directory. For example : /var/www/html/loep'
-		sleep 3
+		sleep 1
 		echo -en '[+] Enter address: ' ; read www
-		echo -en "[+] Web server directory is $www. Are you sure ? [y/n]: " ; read question
-		if [ "$question" = "y" ] ; then
+		echo -en "[+] Web server directory is $www. Are you sure ? [Y/n]: " ; read question
+		if [ "$question" = "y" ] || [ "$question" = "" ] ; then
 			echo '[+]'
 			break
 		else
@@ -538,12 +538,23 @@ eth0 ethernet 01' > /opt/loep_v1.0/conf/interface.conf
 	fi
 
 	sleep 1
+
+	# running services
+	for each_service in $(ls /opt/loep_v1.0/*.sh); do
+	    $each_service > /dev/null 2>1 &
+	done
+	if [ "$?" = "0" ]; then
+	    echo '[+] All services running correctly.'
+	else
+	    echo '[+] Implementation off services has a problem.'
+	fi
+	
+	sleep 1
+	
 	echo '[+]'
 
 	# echo footer
 	echo '[+] Please see README'
-	sleep 1.5
-	echo '[!] Please restart server'
 	sleep 1.5
 	echo '[+] You can view source code from /opt/loep_v1.0/'
 	sleep 1.5
